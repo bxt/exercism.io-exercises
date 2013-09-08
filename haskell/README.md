@@ -3,14 +3,19 @@ Haskell Trail
 
 Workflow
 --------
-
-    vim xxx.hs
+    
+    # Prepare test:
+    cat ../void.hs >> *_test.hs
+    
+    # Run test:
     runhaskell xxx_test.hs
+    
+    # REPL:
     ghci xxx.hs
+    
+    # Lint:
     pointfree 'xxx'
     hlint file.hs
-    git commit -m 'xxx'
-    exercism submit xxx.hs
 
 Docs
 ----
