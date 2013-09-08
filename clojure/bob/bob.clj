@@ -1,10 +1,11 @@
-(ns bob)
+(ns bob
+  (:require [clojure.string :refer [blank? upper-case]]))
 
 (defn silence? [sentence]
-    (clojure.string/blank? sentence))
+    (blank? sentence))
 
 (defn shouting? [sentence]
-    (= sentence (clojure.string/upper-case sentence)))
+    (= sentence (upper-case sentence)))
 
 (defn question? [sentence]
     (= (last sentence) \?))
