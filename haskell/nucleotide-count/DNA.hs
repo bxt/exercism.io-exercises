@@ -14,7 +14,7 @@ count nucleotide
   | otherwise = error $ "invalid nucleotide " ++ show nucleotide
 
 nucleotideCounts :: String -> Map Char Int
-nucleotideCounts sequence = Map.fromList $ map f "ACGT" where
-  f n = (n,count n sequence)
+nucleotideCounts = Map.fromListWith (+) . addZeros . map (,1)
+  where addZeros = (++ map (,0) "ACGT")
 
 validNucleotide = (`elem` "ACGTU")
