@@ -17,6 +17,6 @@ count nucleotide
 
 nucleotideCounts :: String -> Map Char Int
 nucleotideCounts = Map.fromListWith (+) . addZeros . map (,1)
-  where addZeros = (++ map (,0) nucleotides)
+  where addZeros = (map (,0) nucleotides ++)
 
 validNucleotide = (`elem` 'U':nucleotides)
