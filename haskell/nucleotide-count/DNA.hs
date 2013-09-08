@@ -8,6 +8,8 @@ module DNA
 import Data.Map (Map)
 import qualified Data.Map as Map
 
+nucleotides = "ACGT"
+
 count :: Char -> String -> Int
 count nucleotide
   | validNucleotide nucleotide = length . filter (==nucleotide)
@@ -15,6 +17,6 @@ count nucleotide
 
 nucleotideCounts :: String -> Map Char Int
 nucleotideCounts = Map.fromListWith (+) . addZeros . map (,1)
-  where addZeros = (++ map (,0) "ACGT")
+  where addZeros = (++ map (,0) nucleotides)
 
-validNucleotide = (`elem` "ACGTU")
+validNucleotide = (`elem` 'U':nucleotides)
