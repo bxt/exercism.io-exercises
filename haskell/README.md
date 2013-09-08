@@ -1,6 +1,11 @@
 Haskell Trail
 =============
 
+Language Level
+--------------
+
+`**`
+
 Workflow
 --------
     
