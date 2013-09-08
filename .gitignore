@@ -1,3 +1,14 @@
+# Temporary files
+*~
+*.swp
+
+# KDE
+.directory
+
+# Windows
+Thumbs.db
+Desktop.ini
+
 *.py[cod]
 
 # C extensions
