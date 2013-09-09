@@ -4,5 +4,5 @@
 (def ^:private thymidine "T")
 (def ^:private uracil    "U")
 
-(defn to-rna [dna_string]
-  (s/replace dna_string thymidine uracil))
+(defn to-rna [dna-string]
+  (s/replace dna-string thymidine uracil))
