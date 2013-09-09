@@ -23,3 +23,4 @@ Docs
 
 - [docs](http://clojure.org/documentation "Clojure Documentation")
 - [Online REPL](http://tryclj.com/ "Try Clojure REPL tutorial")
+- [Styleguide](https://github.com/bbatsov/clojure-style-guide "The Clojure Style Guide")
