@@ -1,5 +1,4 @@
 import Test.HUnit (Assertion, (@=?), runTestTT, Test(..))
-import Control.Monad (void)
 import DNA (hammingDistance)
 
 testCase :: String -> Assertion -> Test
@@ -38,3 +37,6 @@ hammingDistanceTests =
       "AGACATCTTTCAGCCGCCGGATTAGGCAA"
     , 1 @=? hammingDistance "AGACAACAGCCAGCCGCCGGATT" "AGG" ]
   ]
+
+void :: Functor f => f a -> f ()
+void = fmap (const ())
