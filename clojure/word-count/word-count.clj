@@ -1,5 +1,7 @@
 (ns phrase
   (:require [clojure.string :as s]))
 
+(defn- split [string] (re-seq #"\w+" string))
+
 (defn word-count [string]
-  (frequencies (re-seq #"\w+" (s/lower-case string))))
+  (->  string s/lower-case split frequencies))
