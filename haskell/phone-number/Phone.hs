@@ -14,6 +14,7 @@ areaCode = take 3
 number :: String -> Phonenumber
 number = sanitize . clean where
   clean = filter isDigit
+  sanitize "" = invalidNumber
   sanitize string@(first:rest)
     | length string == 10               = string
     | length rest == 10 && first == '1' = rest
