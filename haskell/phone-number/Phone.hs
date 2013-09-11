@@ -19,7 +19,7 @@ number = sanitize . clean where
     | length string == 10               = string
     | length rest == 10 && first == '1' = rest
     | otherwise                         = invalidNumber
-  invalidNumber = take 10 $ repeat '0'
+  invalidNumber = replicate 10 '0'
 
 prettyPrint :: Phonenumber -> String
 prettyPrint = format . number
