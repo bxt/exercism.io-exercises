@@ -18,9 +18,8 @@ empty :: School
 empty = Map.empty
 
 add :: Int -> String -> School -> School
-add grade name school = newGrades
+add grade name school = Map.insert grade newNames school
   where
-    newGrades = Map.insert grade newNames school
     newNames = Set.insert name currentNames
     currentNames = gradeSet grade school
 
@@ -28,7 +27,7 @@ grade :: Int -> School -> [String]
 grade grade' school = Set.toList (gradeSet grade' school)
 
 gradeSet :: Int -> School -> Set String
-gradeSet grade school = Map.findWithDefault Set.empty grade school
+gradeSet = Map.findWithDefault Set.empty
 
 sorted :: School -> [(Int, [String])]
-sorted school = Map.toList $ Map.map Set.toList school
+sorted = Map.toList . Map.map Set.toList
