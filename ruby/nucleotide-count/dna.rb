@@ -1,6 +1,6 @@
 class DNA
 
-  NUCLEOTIDES = "ATCG".chars
+  NUCLEOTIDES = %w{A C G T}
 
   def initialize(dna_string)
     ensure_valid_nucleotides(dna_string, NUCLEOTIDES)
@@ -29,5 +29,5 @@ private
 end
 
 class RNA
-  NUCLEOTIDES = "AUCG".chars
+  NUCLEOTIDES = %w{A C G U}
 end
