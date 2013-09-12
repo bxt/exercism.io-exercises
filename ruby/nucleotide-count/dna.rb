@@ -3,7 +3,7 @@ class DNA
   NUCLEOTIDES = "ATCG".chars
 
   def initialize(dna_string)
-    ensure_dna_nucleotides(dna_string)
+    ensure_valid_nucleotides(dna_string, NUCLEOTIDES)
     @dna_string = dna_string
   end
 
@@ -14,22 +14,20 @@ class DNA
   end
 
   def count(nucleotide)
-    ensure_rna_nucleotide(nucleotide)
+    ensure_valid_nucleotides(nucleotide, NUCLEOTIDES + RNA::NUCLEOTIDES)
     @dna_string.count(nucleotide)
   end
 
 private
 
-  def ensure_dna_nucleotides(dna_string)
-    if dna_string =~ /([^#{NUCLEOTIDES.join}])/
+  def ensure_valid_nucleotides(dna_string, nucleotides)
+    if dna_string =~ /([^#{nucleotides.join}])/
       raise ArgumentError, "Invalid nucleotide: #{$1}"
     end
   end
 
-  def ensure_rna_nucleotide(nucleotide)
-    unless (NUCLEOTIDES + ["U"]).include? nucleotide
-      raise ArgumentError, "Invalid nucleotide #{nucleotide}"
-    end
-  end
+end
 
+class RNA
+  NUCLEOTIDES = "AUCG".chars
 end
