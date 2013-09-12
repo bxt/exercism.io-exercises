@@ -21,8 +21,8 @@ class DNA
 private
 
   def ensure_dna_nucleotides(dna_string)
-    unless (dna_string.chars - NUCLEOTIDES).empty?
-      raise ArgumentError, "Invalid nucleotide in #{dna_string}"
+    if dna_string =~ /([^#{NUCLEOTIDES.join}])/
+      raise ArgumentError, "Invalid nucleotide: #{$1}"
     end
   end
 
