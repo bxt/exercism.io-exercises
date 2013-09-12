@@ -14,7 +14,7 @@ class DNA
   end
 
   def count(nucleotide)
-    ensure_valid_nucleotides(nucleotide, NUCLEOTIDES + RNA::NUCLEOTIDES)
+    ensure_valid_nucleotides(nucleotide, NUCLEOTIDES | RNA::NUCLEOTIDES)
     @dna_string.count(nucleotide)
   end
 
