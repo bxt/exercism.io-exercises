@@ -1,5 +1,4 @@
 import Test.HUnit (Assertion, (@=?), runTestTT, Test(..))
-import Control.Monad (void)
 import qualified School as S
 import Data.List (foldl')
 
@@ -38,3 +37,6 @@ schoolTests =
     (schoolFromList [(4, "Jennifer"), (6, "Kareem"),
                      (4, "Christopher"), (3, "Kyle")])
   ]
+
+void :: Functor f => f a -> f ()
+void = fmap (const ())
