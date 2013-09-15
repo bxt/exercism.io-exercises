@@ -1,5 +1,4 @@
 import Test.HUnit (Assertion, (@?), (@=?), runTestTT, Test(..))
-import Control.Monad (void)
 import Robot (robotName, mkRobot, resetName)
 import Text.Regex (mkRegex)
 import Text.Regex.Base (matchTest)
@@ -57,3 +56,6 @@ robotTests =
 matchesPattern :: String -> Bool
 matchesPattern = matchTest pattern
   where pattern = mkRegex "^[A-Z]{2}[0-9]{3}$"
+
+void :: Functor f => f a -> f ()
+void = fmap (const ())
