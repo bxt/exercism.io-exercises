@@ -23,10 +23,7 @@ add :: Int -> String -> School -> School
 add = (. Set.singleton) . Map.insertWith Set.union
 
 grade :: Int -> School -> [String]
-grade grade' school = Set.toList (gradeSet grade' school)
-
-gradeSet :: Int -> School -> Set String
-gradeSet = Map.findWithDefault Set.empty
+grade = (Set.toList .) . Map.findWithDefault Set.empty
 
 sorted :: School -> [(Int, [String])]
 sorted = map (second Set.toList) . Map.toList
