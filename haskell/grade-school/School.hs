@@ -20,10 +20,7 @@ empty :: School
 empty = Map.empty
 
 add :: Int -> String -> School -> School
-add grade name school = Map.insert grade newNames school
-  where
-    newNames = Set.insert name currentNames
-    currentNames = gradeSet grade school
+add = (. Set.singleton) . Map.insertWith Set.union
 
 grade :: Int -> School -> [String]
 grade grade' school = Set.toList (gradeSet grade' school)
