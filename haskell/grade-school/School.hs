@@ -12,6 +12,8 @@ import qualified Data.Set as Set
 import Data.Map (Map)
 import qualified Data.Map as Map
 
+import Data.Graph.Inductive.Query.Monad (mapSnd)
+
 type School = Map Int (Set String)
 
 empty :: School
@@ -30,4 +32,4 @@ gradeSet :: Int -> School -> Set String
 gradeSet = Map.findWithDefault Set.empty
 
 sorted :: School -> [(Int, [String])]
-sorted = Map.toList . Map.map Set.toList
+sorted = map (mapSnd Set.toList) . Map.toList
