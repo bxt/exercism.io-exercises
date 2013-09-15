@@ -1,11 +1,13 @@
 (ns anagram
   (:require [clojure.string :as s]))
 
-(defn- anagram? [& words]
-  (let [lowers (map s/lower-case words)
-        freqs (map frequencies lowers)]
-    (and (apply not= lowers)
-         (apply = freqs))))
+(def letters (comp frequencies s/lower-case))
+
+(defn- on [g f x y] (g (f x) (f y)))
+
+(defn- anagram? [word1 word2]
+  (and (on not= s/lower-case word1 word2)
+       (on = letters word1 word2)))
 
 (defn anagrams-for [word candidates]
-  (filter (partial anagram? word) candidates))
+  (filter #(anagram? word %) candidates))
