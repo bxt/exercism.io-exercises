@@ -10,4 +10,4 @@
          (apply = freqs))))
 
 (defn anagrams-for [word candidates]
-  (filter (fn [x] (anagram? word x)) candidates))
+  (filter (partial anagram? word) candidates))
