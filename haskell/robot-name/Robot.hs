@@ -14,9 +14,7 @@ robotName :: Robot -> IO String
 robotName = readIORef
 
 mkRobot :: IO Robot
-mkRobot = do
-  label <- robotLabel
-  newIORef label
+mkRobot = robotLabel >>= newIORef
 
 robotLabel :: IO String
 robotLabel = mapM (fmap chr) [char, char, num, num, num]
@@ -26,6 +24,4 @@ char = randomRIO (65,90)
 num  = randomRIO (48,57)
 
 resetName :: Robot -> IO ()
-resetName r = do
-  label <- robotLabel
-  modifyIORef r (const label)
+resetName r = robotLabel >>= writeIORef r
