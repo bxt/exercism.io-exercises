@@ -3,11 +3,11 @@
 
 (defn- normalize [word] (-> word s/lower-case sort))
 
-(defn- anagram? [x y]
-  (let [xl (s/lower-case x)
-        yl (s/lower-case y)]
-    (and (not= xl yl)
-         (= (frequencies xl) (frequencies yl)))))
+(defn- anagram? [& words]
+  (let [lowers (map s/lower-case words)
+        freqs (map frequencies lowers)]
+    (and (apply not= lowers)
+         (apply = freqs))))
 
 (defn anagrams-for [word candidates]
   (filter (fn [x] (anagram? word x)) candidates))
