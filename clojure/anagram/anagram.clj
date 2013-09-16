@@ -4,8 +4,8 @@
 (defn- on [g f x y] (g (f x) (f y)))
 
 (defn- noralize [word]
-  (let [[lower (s/lower-case word)]
-        [freqs (frequencies lower)]]
+  (let [lower (s/lower-case word)
+        freqs (frequencies lower)]
         {:lower lower :freqs freqs}))
 
 (defn- anagram-of? [word1]
