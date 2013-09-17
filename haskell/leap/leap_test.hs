@@ -1,5 +1,5 @@
 import Test.HUnit (Assertion, (@=?), runTestTT, Test(..))
-import Control.Monad (void)
+-- import Control.Monad (void)
 import LeapYear (isLeapYear)
 
 testCase :: String -> Assertion -> Test
@@ -20,3 +20,6 @@ isLeapYearTests =
   , testCase "exceptional century" $
     True @=? isLeapYear 2000
   ]
+
+void :: Functor f => f a -> f ()
+void = fmap (const ())
