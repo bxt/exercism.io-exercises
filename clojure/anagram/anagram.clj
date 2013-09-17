@@ -1,7 +1,7 @@
 (ns anagram
   (:require [clojure.string :as s]))
 
-(defn- noralize [word]
+(defn- normalize [word]
   (let [lower (s/lower-case word)
         freqs (frequencies lower)]
         [lower freqs]))
@@ -12,7 +12,7 @@
          (=    freqs1 freqs2))))
 
 (defn- anagram-of? [word]
-  (comp (inner-anagram-of? (noralize word)) noralize))
+  (comp (inner-anagram-of? (normalize word)) normalize))
 
 (defn anagrams-for [word candidates]
   (filter (anagram-of? word) candidates))
