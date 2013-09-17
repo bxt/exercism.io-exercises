@@ -1,8 +1,6 @@
 (ns anagram
   (:require [clojure.string :as s]))
 
-(defn- on [g f x y] (g (f x) (f y)))
-
 (defn- noralize [word]
   (let [lower (s/lower-case word)
         freqs (frequencies lower)]
