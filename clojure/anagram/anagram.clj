@@ -2,9 +2,8 @@
   (:require [clojure.string :as s]))
 
 (defn- normalize [word]
-  (let [lower (s/lower-case word)
-        freqs (frequencies lower)]
-        [lower freqs]))
+  (let [lower (s/lower-case word)]
+       [lower (frequencies lower)]))
 
 (defn- inner-anagram-of? [[lower1 freqs1]]
   (fn [[lower2 freqs2]]
