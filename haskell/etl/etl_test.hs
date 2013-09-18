@@ -1,5 +1,5 @@
 import Test.HUnit (Assertion, (@=?), runTestTT, Test(..))
-import Control.Monad (void)
+-- import Control.Monad (void)
 import ETL (transform)
 import qualified Data.Map as M
 
@@ -42,3 +42,6 @@ fullIn =
   , (8, ["J", "X"])
   , (10, ["Q", "Z"])
   ]
+
+void :: Functor f => f a -> f ()
+void = fmap (const ())
