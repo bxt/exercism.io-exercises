@@ -8,4 +8,4 @@ import Data.Map (Map)
 import qualified Data.Map as Map
 
 transform :: Map Int [String] -> Map String Int
-transform = undefined
+transform = Map.fromList . concat . map (\(points, letters) -> map ((\l -> (l, points)) . map toLower) letters) . Map.toList
