@@ -1,3 +1,5 @@
+{-# LANGUAGE TupleSections #-}
+
 module ETL
   ( transform
   ) where
@@ -8,4 +10,7 @@ import Data.Map (Map)
 import qualified Data.Map as Map
 
 transform :: Map Int [String] -> Map String Int
-transform = Map.fromList . concat . map (\(points, letters) -> map ((\l -> (l, points)) . map toLower) letters) . Map.toList
+transform = Map.fromList . transformList . Map.toList
+  where transformList = concatMap (uncurry stringsToEntries)
+
+stringsToEntries points = map ((,points) . map toLower)
