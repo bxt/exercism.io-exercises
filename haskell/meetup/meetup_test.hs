@@ -1,5 +1,5 @@
 import Test.HUnit (Assertion, (@=?), runTestTT, Test(..))
-import Control.Monad (void)
+-- import Control.Monad (void)
 import Meetup (Weekday(..), Schedule(..), meetupDay)
 import Data.Time.Calendar (fromGregorian)
 
@@ -196,3 +196,7 @@ meetupDayTests =
   , testCase "last Sunday of april 2013" $
     fromGregorian 2013 4 28 @=? meetupDay Last Sunday 2013 4
   ]
+
+
+void :: Functor f => f a -> f ()
+void = fmap (const ())
