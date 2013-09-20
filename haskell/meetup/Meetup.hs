@@ -12,21 +12,32 @@ import qualified Data.Map as Map
 import Data.Time.Calendar
 import Data.Time.Calendar.WeekDate (toWeekDate)
 
+import Control.Monad.Reader
+
 data Weekday = Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday
   deriving (Enum, Eq, Show)
 
 type Month = Int
 type Year = Integer
+type MY = (Integer, Int)
+year = fst
+month = snd
 
 data Schedule = Teenth | First | Second | Third | Fourth | Last
   deriving Show
 
 meetupDay :: Schedule -> Weekday -> Year -> Month -> Day
-meetupDay s w y m = findWeekday w $ map (fromGregorian y m) $ candidates s y m
+meetupDay s w y m = findWeekday w $ map (\d -> (runReader (fromGregorian' d) (y, m))) $ runReader (candidates s) (y, m)
 
-type CandidateGenerator = Year -> Month -> [Int]
+type CandidateGenerator = Reader MY [Int]
 
-candidates :: Schedule -> CandidateGenerator
+fromGregorian' :: Int -> Reader MY Day
+fromGregorian' d = do
+  y <- asks year
+  m <- asks month
+  return $ fromGregorian y m d
+
+candidates :: Schedule -> Reader MY [Int]
 candidates First  = week 1
 candidates Second = week 2
 candidates Third  = week 3
@@ -34,17 +45,17 @@ candidates Fourth = week 4
 candidates Teenth = teeths
 candidates Last   = lastDays
 
-ignoreMonth :: [Int] -> CandidateGenerator
-ignoreMonth = const . const
-
 week :: Int -> CandidateGenerator
-week n = ignoreMonth $ map (+ (n-1)*7) [1..7]
+week n = return $ map (+ (n-1)*7) [1..7]
 
 teeths :: CandidateGenerator
-teeths  = ignoreMonth [13..19]
+teeths  = return [13..19]
 
 lastDays :: CandidateGenerator
-lastDays y m = take 7 $ enumFromDown (gregorianMonthLength y m)
+lastDays = do
+  y <- asks year
+  m <- asks month
+  return $ take 7 $ enumFromDown (gregorianMonthLength y m)
 
 findWeekday :: Weekday -> [Day] ->  Day
 findWeekday w = head . filter ((== w) . fromDay)
