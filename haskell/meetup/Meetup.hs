@@ -27,22 +27,16 @@ data Schedule = Teenth | First | Second | Third | Fourth | Last
   deriving Show
 
 meetupDay :: Schedule -> Weekday -> Year -> Month -> Day
-meetupDay s w y m = runReader (combiReader s w) (y, m)
+meetupDay s w = curry $ combiReader s w
 
-combiReader s w = do
-  cands <- candidates s
-  days <- mapM fromGregorian' cands
-  return $ findWeekday w days
+combiReader s w = liftM (findWeekday w) $ mapM fromGregorian' =<< candidates s
 
-type CandidateGenerator = Reader MY [Int]
+type CandidateGenerator = MY -> [Int]
 
-fromGregorian' :: Int -> Reader MY Day
-fromGregorian' d = do
-  y <- asks year
-  m <- asks month
-  return $ fromGregorian y m d
+fromGregorian' :: Int -> MY -> Day
+fromGregorian' = flip $ uncurry fromGregorian
 
-candidates :: Schedule -> Reader MY [Int]
+candidates :: Schedule -> MY -> [Int]
 candidates First  = week 1
 candidates Second = week 2
 candidates Third  = week 3
@@ -57,17 +51,12 @@ teeths :: CandidateGenerator
 teeths  = return [13..19]
 
 lastDays :: CandidateGenerator
-lastDays = do
-  ml <- gregorianMonthLength'
-  return $ take 7 $ enumFromDown ml
+lastDays = liftM (take 7 . enumFromDown) gregorianMonthLength'
 
-gregorianMonthLength' :: Reader MY Int
-gregorianMonthLength' = do
-  y <- asks year
-  m <- asks month
-  return $ gregorianMonthLength y m
+gregorianMonthLength' :: MY -> Int
+gregorianMonthLength' = uncurry gregorianMonthLength
 
-findWeekday :: Weekday -> [Day] ->  Day
+findWeekday :: Weekday -> [Day] -> Day
 findWeekday w = head . filter ((== w) . fromDay)
 
 fromDay :: Day -> Weekday
