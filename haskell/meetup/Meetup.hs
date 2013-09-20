@@ -32,7 +32,7 @@ meetupDay :: Schedule -> Weekday -> Year -> Month -> Day
 meetupDay = (curry .) . meetupDayM  where
   meetupDayM s w = liftM (findWeekday w) $ mapM fromGregorianM =<< candidates s
 
-candidates :: Schedule -> YearMonth [Int]
+candidates :: Schedule -> YearMonth [Date]
 candidates First  = week 1
 candidates Second = week 2
 candidates Third  = week 3
@@ -40,13 +40,13 @@ candidates Fourth = week 4
 candidates Teenth = teenths
 candidates Last   = lastDays
 
-week :: Int -> YearMonth [Int]
+week :: Int -> YearMonth [Date]
 week n = return $ map (+ (n-1)*7) [1..7]
 
-teenths :: YearMonth [Int]
+teenths :: YearMonth [Date]
 teenths  = return [13..19]
 
-lastDays :: YearMonth [Int]
+lastDays :: YearMonth [Date]
 lastDays = liftM (take 7 . enumFromDown) (uncurry gregorianMonthLength)
 
 findWeekday :: Weekday -> [Day] -> Day
