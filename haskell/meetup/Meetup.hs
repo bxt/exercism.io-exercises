@@ -27,7 +27,12 @@ data Schedule = Teenth | First | Second | Third | Fourth | Last
   deriving Show
 
 meetupDay :: Schedule -> Weekday -> Year -> Month -> Day
-meetupDay s w y m = findWeekday w $ map (\d -> (runReader (fromGregorian' d) (y, m))) $ runReader (candidates s) (y, m)
+meetupDay s w y m = runReader (combiReader s w) (y, m)
+
+combiReader s w = do
+  cands <- candidates s
+  days <- mapM fromGregorian' candis
+  return $ findWeekday w days
 
 type CandidateGenerator = Reader MY [Int]
 
