@@ -22,31 +22,38 @@ data Schedule = Teenth | First | Second | Third | Fourth | Last
   deriving Show
 
 meetupDay :: Schedule -> Weekday -> Year -> Month -> Day
-meetupDay s w y m = findWeekday w $ candidates s y m
+meetupDay s w y m = findWeekday w $ map (fromGregorian y m) $ candidates s y m
 
-candidates :: Schedule -> Year -> Month -> [Day]
-candidates First = week 1
+type CandidateGenerator = Year -> Month -> [Int]
+
+candidates :: Schedule -> CandidateGenerator
+candidates First  = week 1
 candidates Second = week 2
-candidates Third = week 3
+candidates Third  = week 3
 candidates Fourth = week 4
 candidates Teenth = teeths
-candidates Last = lastDays
+candidates Last   = lastDays
 
-daysOfMonth y m ds = map (fromGregorian y m) ds
-week n y m =  daysOfMonth y m $ map (+((n-1)*7)) [1..7]
+ignoreMonth :: [Int] -> CandidateGenerator
+ignoreMonth = const . const
 
-teeths :: Year -> Month -> [Day]
-teeths y m = daysOfMonth y m [13..19]
+week :: Int -> CandidateGenerator
+week n = ignoreMonth $ map (+ (n-1)*7) [1..7]
 
-lastDays :: Year -> Month -> [Day]
-lastDays y m = daysOfMonth y m $ take 7 $ enumFromdDown (gregorianMonthLength y m)
+teeths :: CandidateGenerator
+teeths  = ignoreMonth [13..19]
 
-enumFromdDown x = enumFromThen x (pred x)
+lastDays :: CandidateGenerator
+lastDays y m = take 7 $ enumFromDown (gregorianMonthLength y m)
 
 findWeekday :: Weekday -> [Day] ->  Day
-findWeekday w = head . filter (\d -> fromDay d == w)
+findWeekday w = head . filter ((== w) . fromDay)
 
 fromDay :: Day -> Weekday
-fromDay = toEnum . toWeekNumber
-toWeekNumber :: Day -> Int
-toWeekNumber d = let (_,_,dow) = toWeekDate d in dow - 1
+fromDay = toEnum . toWeekNumber where
+  toWeekNumber d = let (_,_,dow) = toWeekDate d in dow - 1
+
+enumFromDown :: Enum a => a -> [a]
+enumFromDown x = enumFromThen x (pred x)
+
+
