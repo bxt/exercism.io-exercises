@@ -31,7 +31,7 @@ meetupDay s w y m = runReader (combiReader s w) (y, m)
 
 combiReader s w = do
   cands <- candidates s
-  days <- mapM fromGregorian' candis
+  days <- mapM fromGregorian' cands
   return $ findWeekday w days
 
 type CandidateGenerator = Reader MY [Int]
@@ -58,9 +58,14 @@ teeths  = return [13..19]
 
 lastDays :: CandidateGenerator
 lastDays = do
+  ml <- gregorianMonthLength'
+  return $ take 7 $ enumFromDown ml
+
+gregorianMonthLength' :: Reader MY Int
+gregorianMonthLength' = do
   y <- asks year
   m <- asks month
-  return $ take 7 $ enumFromDown (gregorianMonthLength y m)
+  return $ gregorianMonthLength y m
 
 findWeekday :: Weekday -> [Day] ->  Day
 findWeekday w = head . filter ((== w) . fromDay)
