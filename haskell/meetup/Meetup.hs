@@ -29,8 +29,8 @@ data Schedule = Teenth | First | Second | Third | Fourth | Last
   deriving Show
 
 meetupDay :: Schedule -> Weekday -> Year -> Month -> Day
-meetupDay = (curry .) . meetupDayM  where
-  meetupDayM s w = liftM (findWeekday w) $ mapM fromGregorianM =<< candidates s
+meetupDay s w = curry $ findWeekday w . meetupWeek s where
+  meetupWeek = (mapM fromGregorianM =<<) . candidates
 
 candidates :: Schedule -> YearMonth [Date]
 candidates First  = week 1
@@ -49,8 +49,8 @@ teenths  = return [13..19]
 lastDays :: YearMonth [Date]
 lastDays = liftM (take 7 . enumFromDown) (uncurry gregorianMonthLength)
 
-findWeekday :: Weekday -> [Day] -> Day
-findWeekday w = head . filter ((== w) . fromDay)
-
 fromGregorianM :: Date -> YearMonth Day
 fromGregorianM = flip $ uncurry fromGregorian
+
+findWeekday :: Weekday -> [Day] -> Day
+findWeekday w = head . filter ((== w) . fromDay)
