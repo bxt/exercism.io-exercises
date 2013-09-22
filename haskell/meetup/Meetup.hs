@@ -10,15 +10,8 @@ import Control.Monad.Instances
 import Data.Time.Calendar
 import Data.Time.Calendar.WeekDate (toWeekDate)
 
-enumFromDown :: Enum a => a -> [a]
-enumFromDown x = enumFromThen x (pred x)
-
 data Weekday = Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday
   deriving (Enum, Eq, Show)
-
-fromDay :: Day -> Weekday
-fromDay = toEnum . toWeekNumber where
-  toWeekNumber d = let (_,_,dow) = toWeekDate d in dow - 1
 
 type Year = Integer
 type Month = Int
@@ -29,28 +22,30 @@ data Schedule = Teenth | First | Second | Third | Fourth | Last
   deriving Show
 
 meetupDay :: Schedule -> Weekday -> Year -> Month -> Day
-meetupDay s w = curry $ findWeekday w . meetupWeek s where
-  meetupWeek = (mapM fromGregorianM =<<) . candidates
+meetupDay s w = curry $ toWeekday w . weekStart s where
+  weekStart = (fromGregorianM =<<) . weekStartDate
 
-candidates :: Schedule -> YearMonth [Date]
-candidates First  = week 1
-candidates Second = week 2
-candidates Third  = week 3
-candidates Fourth = week 4
-candidates Teenth = teenths
-candidates Last   = lastDays
+weekStartDate :: Schedule -> YearMonth Date
+weekStartDate First  = week 1
+weekStartDate Second = week 2
+weekStartDate Third  = week 3
+weekStartDate Fourth = week 4
+weekStartDate Teenth = teenths
+weekStartDate Last   = lastDays
 
-week :: Int -> YearMonth [Date]
-week n = return $ map (+ (n-1)*7) [1..7]
+week :: Int -> YearMonth Date
+week n = return (1 + (n-1)*7)
 
-teenths :: YearMonth [Date]
-teenths  = return [13..19]
+teenths :: YearMonth Date
+teenths  = return 13
 
-lastDays :: YearMonth [Date]
-lastDays = liftM (take 7 . enumFromDown) (uncurry gregorianMonthLength)
+lastDays :: YearMonth Date
+lastDays = liftM (subtract 6) (uncurry gregorianMonthLength)
 
 fromGregorianM :: Date -> YearMonth Day
 fromGregorianM = flip $ uncurry fromGregorian
 
-findWeekday :: Weekday -> [Day] -> Day
-findWeekday w = head . filter ((== w) . fromDay)
+toWeekday :: Weekday -> Day -> Day
+toWeekday w d = addDays (fromIntegral diff) d where
+  diff = (fromEnum w - d') `mod` 7
+  (_, _, d' + 1) = toWeekDate d
