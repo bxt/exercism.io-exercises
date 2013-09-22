@@ -46,8 +46,8 @@ fromGregorianM :: Date -> YearMonth Day
 fromGregorianM = flip $ uncurry fromGregorian
 
 advanceWeekday :: Weekday -> Day -> Day
-advanceWeekday = (addDays =<<) . (fromIntegral .) . toWeekday
+advanceWeekday = (addDays =<<) . (fromIntegral .) . daysToWeekday
 
-toWeekday :: Weekday -> Day -> Int
-toWeekday w d = (fromEnum w - d') `mod` 7 where
+daysToWeekday :: Weekday -> Day -> Int
+daysToWeekday w d = (fromEnum w - d') `mod` 7 where
   (_, _, d' + 1) = toWeekDate d
