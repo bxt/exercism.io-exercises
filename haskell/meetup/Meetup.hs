@@ -22,7 +22,7 @@ data Schedule = Teenth | First | Second | Third | Fourth | Last
   deriving Show
 
 meetupDay :: Schedule -> Weekday -> Year -> Month -> Day
-meetupDay s w = curry $ toWeekday w . weekStart s where
+meetupDay s w = curry $ advanceWeekday w . weekStart s where
   weekStart = (fromGregorianM =<<) . weekStartDate
 
 weekStartDate :: Schedule -> YearMonth Date
@@ -45,7 +45,9 @@ lastDays = liftM (subtract 6) (uncurry gregorianMonthLength)
 fromGregorianM :: Date -> YearMonth Day
 fromGregorianM = flip $ uncurry fromGregorian
 
-toWeekday :: Weekday -> Day -> Day
-toWeekday w d = addDays (fromIntegral diff) d where
-  diff = (fromEnum w - d') `mod` 7
+advanceWeekday :: Weekday -> Day -> Day
+advanceWeekday = (addDays =<<) . (fromIntegral .) . toWeekday
+
+toWeekday :: Weekday -> Day -> Int
+toWeekday w d = (fromEnum w - d') `mod` 7 where
   (_, _, d' + 1) = toWeekDate d
