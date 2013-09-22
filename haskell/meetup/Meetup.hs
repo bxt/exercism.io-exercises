@@ -34,7 +34,7 @@ weekStartDate Teenth = teenths
 weekStartDate Last   = lastDays
 
 week :: Int -> YearMonth Date
-week n = return (1 + (n-1)*7)
+week = return . succ . (*7) . pred
 
 teenths :: YearMonth Date
 teenths  = return 13
