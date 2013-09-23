@@ -23,7 +23,7 @@ ageOnTests :: [Test]
 ageOnTests =
   [ testCase "age in earth years" $
     31.69 `roundsTo` ageOn Earth 1000000000
-  , testCase "age in mercury years" $ do
+    , testCase "age in mercury years" $ do
     let seconds = 2134835688
     67.65 `roundsTo` ageOn Earth seconds
     280.88 `roundsTo` ageOn Mercury seconds
@@ -52,3 +52,7 @@ ageOnTests =
     260.16 `roundsTo` ageOn Earth seconds
     1.58 `roundsTo` ageOn Neptune seconds
   ]
+
+
+void :: Functor f => f a -> f ()
+void = fmap (const ())
