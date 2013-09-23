@@ -9,5 +9,8 @@ square = (squares!!) . pred
 squares :: [Integer]
 squares = 1 : map (*2) squares
 
+totalTo :: Int -> Integer
+totalTo = pred . (squares!!)
+
 total :: Integer
-total = pred $ square 65
+total = totalTo 64
