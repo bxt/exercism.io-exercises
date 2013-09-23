@@ -3,7 +3,6 @@ module Grains
   , total
   ) where
 
-square 1 = 1
-square n = 2 * square (pred n)
+square = (2 ^^) . pred
 
-total = sum $ map square [1..64]
+total = pred $ square 65
