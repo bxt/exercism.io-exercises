@@ -4,7 +4,7 @@ module SpaceAge
   ) where
 
 data Planet = Mercury | Venus | Earth | Mars | Jupiter | Saturn | Uranus | Neptune
-  deriving Show
+  deriving (Show, Enum)
 
 ageOn :: Planet -> Integer -> Float
 ageOn p s = toEarthYears s / orbitalPeriod p
