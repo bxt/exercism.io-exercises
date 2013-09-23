@@ -3,11 +3,11 @@ module Grains
   , total
   ) where
 
-square :: Int -> Integer
-square = (squares!!) . pred
-
 squares :: [Integer]
 squares = 1 : map (*2) squares
+
+square :: Int -> Integer
+square = (squares!!) . pred
 
 totalTo :: Int -> Integer
 totalTo = pred . (squares!!)
