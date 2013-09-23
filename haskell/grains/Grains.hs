@@ -3,6 +3,8 @@ module Grains
   , total
   ) where
 
-square = (2 ^^) . pred
+square :: Int -> Integer
+square = (2 ^) . pred
 
+total :: Integer
 total = pred $ square 65
