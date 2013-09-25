@@ -8,10 +8,7 @@ Language Level
 
 Workflow
 --------
-    
-    # Prepare test:
-    perl -i.bak -pe '{s/(import Control.Monad \(void\))/-- $1/}' *_test.hs; rm *_test.hs.bak; cat ../void.hs >> *_test.hs
-    
+
     # Run test:
     runhaskell xxx_test.hs
     
