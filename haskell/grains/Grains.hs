@@ -3,14 +3,15 @@ module Grains
   , total
   ) where
 
-squares :: [Integer]
-squares = 1 : map (*2) squares
+import Data.Bits (shift)
+
+squares = shift 1
 
 square :: Int -> Integer
-square = (squares!!) . pred
+square = squares . pred
 
 totalTo :: Int -> Integer
-totalTo = pred . (squares!!)
+totalTo = pred . squares
 
 total :: Integer
 total = totalTo 64
