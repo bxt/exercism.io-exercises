@@ -23,5 +23,6 @@ gigasecondTests =
     fromGregorian 2009 2 19 @=? fromDay (fromGregorian 1977 6 13)
   , testCase "from jul 19 1959" $
     fromGregorian 1991 3 27 @=? fromDay (fromGregorian 1959 7 19)
-    -- customize this to test your birthday and find your gigasecond date:
+  , testCase "from nov 19 1990" $
+    fromGregorian 2022 07 28 @=? fromDay (fromGregorian 1990 11 19)
   ]
