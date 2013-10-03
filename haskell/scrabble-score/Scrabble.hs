@@ -1,3 +1,5 @@
+{-# LANGUAGE TupleSections #-}
+
 module Scrabble
   ( scoreLetter
   , scoreWord
@@ -8,21 +10,19 @@ import Data.Array.IArray
 import Data.Array.Unboxed
 
 scores :: UArray Char Int
-scores = array r [(l, s l) | l <- range r] where
-  r = ('A','Z')
-  s l
-    | l `elem` "AEIOULNRST" =  1
-    | l `elem` "DG"         =  2
-    | l `elem` "BCMP "      =  3
-    | l `elem` "FHVWY"      =  4
-    | l `elem` "K"          =  5
-    | l `elem` "JX "        =  8
-    | l `elem` "QZ"         = 10
-    | otherwise             = error $ l:" can not be scored"
+scores = array ('A','Z') (s >>= x) where
+  s = [ ("AEIOULNRST",  1)
+      , ("DG"        ,  2)
+      , ("BCMP"      ,  3)
+      , ("FHVWY"     ,  4)
+      , ("K"         ,  5)
+      , ("JX"        ,  8)
+      , ("QZ"        , 10)
+      ]
+  x (a,b) = map (,b) a
 
 scoreLetter :: Char -> Int
 scoreLetter = (scores !) . toUpper where
 
 scoreWord :: String -> Int
 scoreWord = sum . map scoreLetter
-
