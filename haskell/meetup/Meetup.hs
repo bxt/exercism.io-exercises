@@ -26,9 +26,10 @@ meetupDay s w = curry $ advanceWeekday w . weekStart s where
   weekStart = (fromGregorianM =<<) . weekStartDate
 
 weekStartDate :: Schedule -> YearMonth Date
-weekStartDate Teenth = teenths
-weekStartDate Last   = lastDays
-weekStartDate s      = week $ fromEnum s
+weekStartDate s = case s of
+  Teenth -> teenths
+  Last   -> lastDays
+  _      -> week $ fromEnum s
 
 week :: Int -> YearMonth Date
 week = return . succ . (*7) . pred
