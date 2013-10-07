@@ -1,5 +1,3 @@
-{-# LANGUAGE TupleSections #-}
-
 module Scrabble
   ( scoreLetter
   , scoreWord
@@ -19,7 +17,7 @@ scores = array ('A','Z') (s >>= x) where
       , ("JX"        ,  8)
       , ("QZ"        , 10)
       ]
-  x (a,b) = map (,b) a
+  x (a,b) = zip a (repeat b)
 
 scoreLetter :: Char -> Int
 scoreLetter = (scores !) . toUpper where
