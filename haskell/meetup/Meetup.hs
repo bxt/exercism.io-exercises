@@ -19,19 +19,16 @@ type Date = Int
 type YearMonth a = (Year, Month) -> a
 
 data Schedule = Teenth | First | Second | Third | Fourth | Last
-  deriving Show
+  deriving (Enum, Show)
 
 meetupDay :: Schedule -> Weekday -> Year -> Month -> Day
 meetupDay s w = curry $ advanceWeekday w . weekStart s where
   weekStart = (fromGregorianM =<<) . weekStartDate
 
 weekStartDate :: Schedule -> YearMonth Date
-weekStartDate First  = week 1
-weekStartDate Second = week 2
-weekStartDate Third  = week 3
-weekStartDate Fourth = week 4
 weekStartDate Teenth = teenths
 weekStartDate Last   = lastDays
+weekStartDate s      = week $ fromEnum s
 
 week :: Int -> YearMonth Date
 week = return . succ . (*7) . pred
